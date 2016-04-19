@@ -72,7 +72,7 @@ module Karafka
       # Creates a callback that will be executed before scheduling to Sidekiq
       # @param method_name [Symbol, String] method name or nil if we plan to provide a block
       # @yield A block with a code that should be executed before scheduling
-      # @note If value returned is false, will chalt the chain and not schedlue to Sidekiq
+      # @note If value returned is false, will chalt the chain and not schedule to Sidekiq
       # @example Define a block before_enqueue callback
       #   before_enqueue do
       #     # logic here
