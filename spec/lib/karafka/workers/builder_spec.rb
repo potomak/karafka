@@ -137,21 +137,35 @@ RSpec.describe Karafka::Workers::Builder do
 
   describe '#base' do
     before do
-      expect(Karafka::BaseWorker)
+      expect(Karafka::Workers::Sidekiq)
         .to receive(:subclasses)
-        .and_return([descendant])
+        .and_return([sidekiq_descendant])
+      allow(Karafka::Workers::Celluloid)
+        .to receive(:subclasses)
+        .and_return([celluloid_descendant])
     end
 
-    context 'when there is a direct descendant of Karafka::BaseWorker' do
-      let(:descendant) { double }
+    context 'when there is a direct descendant of Karafka::Workers::Sidekiq' do
+      let(:sidekiq_descendant) { double }
+      let(:celluloid_descendant) { double }
 
       it 'expect to use it' do
-        expect(subject.send(:base)).to eq descendant
+        expect(subject.send(:base)).to eq sidekiq_descendant
       end
     end
 
-    context 'when there is no direct descendant of Karafka::BaseWorker' do
-      let(:descendant) { nil }
+    context 'when there is a direct descendant of Karafka::Workers::Celluloid' do
+      let(:sidekiq_descendant) { nil }
+      let(:celluloid_descendant) { double }
+
+      it 'expect to use it' do
+        expect(subject.send(:base)).to eq celluloid_descendant
+      end
+    end
+
+    context 'when there is no direct descendant of neither Karafka::Workers::Sidekiq nor Karafka::Workers::Celluloid' do
+      let(:sidekiq_descendant) { nil }
+      let(:celluloid_descendant) { nil }
       let(:error) { Karafka::Errors::BaseWorkerDescentantMissing }
 
       it { expect { subject.send(:base) }.to raise_error(error) }

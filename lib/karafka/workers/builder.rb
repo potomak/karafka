@@ -58,12 +58,14 @@ module Karafka
         base
       end
 
-      # @return [Class] descendant of Karafka::BaseWorker from which all other workers
-      #   should inherit
+      # @return [Class] the first descendant of Karafka::Workers::Sidekiq or
+      #   Karafka::Workers::Celluloid from which all other workers should inherit
       # @raise [Karafka::Errors::BaseWorkerDescentantMissing] raised when Karafka cannot detect
       #   direct Karafka::BaseWorker descendant from which it could build workers
       def base
-        Karafka::BaseWorker.subclasses.first || raise(Errors::BaseWorkerDescentantMissing)
+        Karafka::Workers::Sidekiq.subclasses.first ||
+          Karafka::Workers::Celluloid.subclasses.first ||
+          raise(Errors::BaseWorkerDescentantMissing)
       end
     end
   end
