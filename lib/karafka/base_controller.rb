@@ -55,6 +55,7 @@ module Karafka
   class BaseController
     extend ActiveSupport::DescendantsTracker
     include ActiveSupport::Callbacks
+    include Celluloid
 
     # The schedule method is wrapped with a set of callbacks
     # We won't run perform at the backend if any of the callbacks
