@@ -138,13 +138,13 @@ RSpec.describe Karafka::BaseController do
       context 'and it returns false' do
         subject do
           ClassBuilder.inherit(described_class) do
-            before_enqueue :method
+            before_enqueue :callback
 
             def perform
               self
             end
 
-            def method
+            def callback
               false
             end
           end.new
@@ -160,13 +160,13 @@ RSpec.describe Karafka::BaseController do
       context 'and it does not return false' do
         subject do
           ClassBuilder.inherit(described_class) do
-            before_enqueue :method
+            before_enqueue :callback
 
             def perform
               self
             end
 
-            def method
+            def callback
               true
             end
           end.new
