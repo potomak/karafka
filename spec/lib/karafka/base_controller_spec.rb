@@ -16,8 +16,8 @@ RSpec.describe Karafka::BaseController do
 
     describe '#schedule' do
       context 'when there are no callbacks' do
-        it 'justs schedule via perform_async' do
-          expect(subject).to receive(:perform_async)
+        it 'just schedules via perform_async' do
+          expect(subject.wrapped_object).to receive(:perform_async)
 
           subject.schedule
         end
@@ -127,7 +127,7 @@ RSpec.describe Karafka::BaseController do
         let(:params) { double }
 
         it 'executes perform_async' do
-          expect(subject).to receive(:perform_async)
+          expect(subject.wrapped_object).to receive(:perform_async)
 
           subject.schedule
         end
@@ -173,7 +173,7 @@ RSpec.describe Karafka::BaseController do
         end
 
         it 'enqueues with perform_async' do
-          expect(subject).to receive(:perform_async)
+          expect(subject.wrapped_object).to receive(:perform_async)
 
           subject.schedule
         end
